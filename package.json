@@ -1,0 +1,42 @@
+{
+  "name": "atm_services",
+  "version": "1.0.0",
+  "description": "ATM Machines services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xamarindevelopervietnam/atm_services.git"
+  },
+  "keywords": [
+    "kennyd",
+    "bitcoin",
+    "ethereum"
+  ],
+  "author": "KennyD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xamarindevelopervietnam/atm_services/issues"
+  },
+  "homepage": "https://github.com/xamarindevelopervietnam/atm_services#readme",
+  "dependencies": {
+    "ethereumjs-tx": "^1.3.7",
+    "mosca": "^2.8.3",
+    "rxjs": "^6.2.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "sourceMaps": true,
+    "retainLines": true
+  }
+}
