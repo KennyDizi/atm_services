@@ -15,7 +15,7 @@ source.subscribe(val =>
 
 /*** loading mosca server ***/
 
-import {Server, persistence} from 'mosca';
+import {Server, persistence, Client, Packet} from 'mosca';
 
 /*###########################*/
 
@@ -120,15 +120,19 @@ var server = new Server(serverSettings);
 /****** event listeners *********/
 
 // fired when client is connected
-server.on('clientConnected', function(h, mqttClient) {
+server.on('clientConnected', onClientConnected);
+function onClientConnected(mqttClient: Client)
+{
   console.log("Client connected with id", mqttClient.id, "\n");
-});
+}
 
 // fired when a message is received
-server.on('published', function(packet, mqttClient) {
-  if(mqttClient != undefined)
-    {       
-      try 
+server.on('published', onPublished);
+function onPublished(packet: Packet, mqttClient: Client)
+{
+  if(mqttClient && packet)
+    {
+      try
       {
         var data = packet.payload.toString("utf-8");
         var value = JSON.parse(data);
@@ -151,7 +155,7 @@ server.on('published', function(packet, mqttClient) {
         console.log(error.message);
       }
     }
-});
+}
 
 //fired when client subscribed a topic
 server.on('subscribed', function(topic, mqttClient) {
@@ -164,9 +168,12 @@ server.on('unsubscribed', function(topic, mqttClient) {
 });
 
 //fired when client disconnected
-server.on('clientDisconnected', function(h, mqttClient) {
+server.on('clientDisconnected', onClientDisconnected);
+
+function onClientDisconnected(mqttClient: Client)
+{
   console.log("client", mqttClient.id, "clientDisconnected", "\n")
-});
+}
 
 server.on('ready', setup);
 
