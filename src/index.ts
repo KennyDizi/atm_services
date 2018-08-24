@@ -1,7 +1,7 @@
 // RxJS v6+
 import { timer, Operator } from 'rxjs';
 import {Moment} from 'moment';
-import {messageType} from './defines/messageType';
+import {messageTypes} from './defines/messageTypes';
 import {mongodbUrl} from './defines/mongodbUrl';
 
 /*
@@ -95,14 +95,14 @@ static : ‘/’,
    - `mongo`         the mongo specific options if any otherwise null object
    ** this module is specially used for retain messages
  */
-persistence: {
+persistence:{
   factory: persistence.Mongo,
   url: mongoDbUrl,
   ttl: {
     subscriptions: 60 * 60 * 1000,
     packets: 60 * 60 * 1000,
   },
-  mongo: {}
+  mongo: { }
   },
   logger: {
     level: 'debug'
@@ -123,23 +123,22 @@ var server = new Server(serverSettings);
 
 // fired when client is connected
 server.on('clientConnected', onClientConnected);
-function onClientConnected(mqttClient: Client)
-{
+function onClientConnected(mqttClient: Client){
   console.log("Client connected with id", mqttClient.id, "\n");
 }
 
 // fired when a message is received
 server.on('published', onPublished);
-function onPublished(packet: Packet, mqttClient: Client)
-{
+function onPublished(packet: Packet, mqttClient: Client){
   if(mqttClient && packet)
     {
       try
       {
         var data = packet.payload.toString("utf-8");
         var value = JSON.parse(data);
+        var messageType = value.messageType;
 
-        if(value.messageType % 2 == 0)
+        if(messageType % 2 == 0)
         {
           //var sendTime = Moment().format('MMMM Do YYYY, h:mm:ss a');
           console.log("Message sent to client : \n", value);          
@@ -150,7 +149,34 @@ function onPublished(packet: Packet, mqttClient: Client)
           console.log("Message received from: " + mqttClient.id + " packet : \n", value);
 
           //process message here
-          var type = 1
+          switch(messageType)
+          {
+            case messageTypes.hello:
+            {
+            }
+            break;
+
+            case messageTypes.atmLocationStatus:
+            {
+            }
+            break;
+
+            case messageTypes.atmTradingPrice:
+            {
+            }
+            break;
+
+            case messageTypes.atmTradingStatus:
+            {
+            }
+            break;
+
+            case messageTypes.atmLocationStatus:
+            {
+
+            }
+            break;
+          }
         }
       }
       catch (error)
@@ -158,29 +184,26 @@ function onPublished(packet: Packet, mqttClient: Client)
         console.log(error.message);
       }
     }
-}
+  }
 
 //fired when client subscribed a topic
-server.on('subscribed', function(topic, mqttClient) {
-  console.log("client", mqttClient.id, "subscribed topic", topic, "\n")
+server.on('subscribed', function(topic, mqttClient){
+  console.log("client", mqttClient.id, "subscribed topic", topic, "\n");
 });
 
 //fired when client unsubscribed a topic
-server.on('unsubscribed', function(topic, mqttClient) {
-  console.log("client", mqttClient.id, "unsubscribed topic", topic, "\n")
+server.on('unsubscribed', function(topic, mqttClient){
+  console.log("client", mqttClient.id, "unsubscribed topic", topic, "\n");
 });
 
 //fired when client disconnected
 server.on('clientDisconnected', onClientDisconnected);
-
-function onClientDisconnected(mqttClient: Client)
-{
-  console.log("client", mqttClient.id, "clientDisconnected", "\n")
+function onClientDisconnected(mqttClient: Client){
+  console.log("client", mqttClient.id, "clientDisconnected", "\n");
 }
 
 server.on('ready', setup);
-
-function setup() {
+function setup(){
   console.log('BTC Exchange server is running');
   console.log(server);
   
