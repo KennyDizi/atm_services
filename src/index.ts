@@ -1,6 +1,8 @@
 // RxJS v6+
 import { timer, Operator } from 'rxjs';
 import {Moment} from 'moment';
+import {messageType} from './defines/messageType';
+import {mongodbUrl} from './defines/mongodbUrl';
 
 /*
   timer takes a second argument, how often to emit subsequent values
@@ -148,6 +150,7 @@ function onPublished(packet: Packet, mqttClient: Client)
           console.log("Message received from: " + mqttClient.id + " packet : \n", value);
 
           //process message here
+          var type = 1
         }
       }
       catch (error)
