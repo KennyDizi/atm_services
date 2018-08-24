@@ -2,7 +2,7 @@
 import { timer, Operator } from 'rxjs';
 import {Moment} from 'moment';
 import {messageTypes} from './defines/messageTypes';
-import {mongodbUrl} from './defines/mongodbUrl';
+import {mongodbConnections} from './defines/mongodbConnections';
 
 /*
   timer takes a second argument, how often to emit subsequent values
