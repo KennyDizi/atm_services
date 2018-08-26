@@ -1,8 +1,8 @@
 import { Server, Client } from "mosca";
-import { mongoDbClient } from '../defines/mongoDbClient';
 import * as mongoose from "mongoose";
-import { MongoClient} from 'mongodb';
-import { mongodbConnectionExs } from "../defines/mongodbConnections";
+import { mongoDbNaming } from '../defines/mongoDbNaming';
+import { atmLocationStatusSchema} from '../models/atmLocationStatusModel';
+const atmLocationStatus = mongoose.model(mongoDbNaming.atmLocationStatus, atmLocationStatusSchema);
 
 export class atmLocationStatusReactor {
     private topic: string;
@@ -26,5 +26,14 @@ export class atmLocationStatusReactor {
                 topic: "learn angular.js", progress: 10
             });
             */
+
+           atmLocationStatus.find({}, (err, locations) => {
+            if(err) {
+                console.log(err);
+            }
+            else {
+                console.log(locations);
+            }
+        });
     }
 }
