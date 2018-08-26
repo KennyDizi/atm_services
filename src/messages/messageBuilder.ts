@@ -1,4 +1,4 @@
-import {Packet, Server, Client} from 'mosca';
+import {Packet, Server, Client, Message} from 'mosca';
 import {transferableMessage} from "./transferableMessage";
 import {Chance} from 'chance';
 
@@ -10,7 +10,7 @@ export class messageBuilder
         this.objectReply = objectReply;
     }
 
-    public buildMessage (mqttClient: Client, moscaServer: Server, topic: string, retain: boolean, qos: number, messageType: number,
+    public buildMessageWithCallback (mqttClient: Client, moscaServer: Server, topic: string, retain: boolean, qos: number, messageType: number,
         callback: (mqttClient: Client, moscaServer: Server, packet: Packet) => void) : void
     {
         var chance = new Chance();
@@ -30,5 +30,44 @@ export class messageBuilder
         };
         
         callback(mqttClient, moscaServer, newPacket);
+    }
+
+    buildPacket(topic: string, retain: boolean, qos: number, messageType: number) : Packet {
+        var chance = new Chance();
+        var json = JSON.stringify(this.objectReply);
+        console.log("Message content reply: " + json + "\n");
+        var messageId = chance.integer({ min: 1, max: 9007199254740991 });
+        var message = new transferableMessage(0, 1, messageType, messageId, json);
+        var messageReply = JSON.stringify(message);
+        var buf = Buffer.from(messageReply);
+        
+        const newPacket : Packet = {
+            topic: topic,
+            payload: buf,
+            retain: retain,
+            qos: qos,
+            messageId : chance.string({ length: 16 })
+        };
+
+        return newPacket;
+    }
+
+    buildMessage(topic: string, retain: boolean, qos: number, messageType: number) : Message {
+        var chance = new Chance();
+        var json = JSON.stringify(this.objectReply);
+        console.log("Message content reply: " + json + "\n");
+        var messageId = chance.integer({ min: 1, max: 9007199254740991 });
+        var message = new transferableMessage(0, 1, messageType, messageId, json);
+        var messageReply = JSON.stringify(message);
+        var buf = Buffer.from(messageReply);
+        
+        const newMessage : Message = {
+            topic: topic,
+            payload: buf,
+            retain: retain,
+            qos: qos
+        };
+
+        return newMessage;
     }
 }
