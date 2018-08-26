@@ -2,6 +2,7 @@ import { Server, Client } from "mosca";
 import * as mongoose from "mongoose";
 import { mongoDbNaming } from '../defines/mongoDbNaming';
 import { atmLocationStatusSchema} from '../models/atmLocationStatusModel';
+import { atmLocationStatusMessage } from "../messages/atmLocationStatusMessage";
 const atmLocationStatus = mongoose.model(mongoDbNaming.atmLocationStatus, atmLocationStatusSchema);
 
 export class atmLocationStatusReactor {
@@ -17,7 +18,7 @@ export class atmLocationStatusReactor {
         this.network = network;
     }
 
-    async processMessage(socketServer: Server, mqttClient: Client) {
+    processMessage(socketServer: Server, mqttClient: Client) {
         /*
         var mgClient = new mongoDbClient();
         let db = await mgClient.connect();
@@ -33,6 +34,11 @@ export class atmLocationStatusReactor {
             }
             else {
                 console.log(locations);
+                var msg = new atmLocationStatusMessage(locations);
+                var packet = msg.createMessage(this.topic, this.retain, this.qos);
+                socketServer.published(packet, mqttClient, function(cb) {
+                    console.log(`Send message with callback: ${cb}`);
+                });
             }
         });
     }
