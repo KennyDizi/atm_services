@@ -5,8 +5,8 @@ import { networkTypes } from "./networkTypes";
 export enum mongodbConnections
 {
     local = "mongodb://localhost:27017/atms",
-    cloudTestnet = "mongodb+srv://dbmanager:eLAvxCeoe5BFSBFg@atms-sznh7.mongodb.net/admin",
-    cloudMainnet = "mongodb+srv://dbmanager:eLAvxCeoe5BFSBFg@atms-sznh7.mongodb.net/admin"
+    cloudTestnet = "mongodb+srv://dbmanager:eLAvxCeoe5BFSBFg@atms-sznh7.mongodb.net/atms?retryWrites=true",
+    cloudMainnet = "mongodb+srv://dbmanager:eLAvxCeoe5BFSBFg@atms-sznh7.mongodb.net/atms?retryWrites=true"
 }
 
 export class mongodbConnectionExs {

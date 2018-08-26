@@ -105,7 +105,7 @@ persistence:{
 }
 
 //mongodb
-var mgConnection = mongodbConnectionExs.getConnection(networkTypes.localhost);
+var mgConnection = mongodbConnectionExs.getConnection(networkTypes.testnet);
 mongoose.connect(mgConnection, { useNewUrlParser: true });
 var conn = mongoose.connection;             
  
