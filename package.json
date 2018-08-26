@@ -4,6 +4,8 @@
   "description": "ATM Machines Services",
   "main": "build/index.js",
   "scripts": {
+    "build": "tsc",
+    "buildandrun": "npm run build && node build/index.js",
     "start": "node build/index.js"
   },
   "repository": {
@@ -23,20 +25,21 @@
   "homepage": "https://github.com/xamarindevelopervietnam/atm_services#readme",
   "dependencies": {
     "@types/chance": "^1.0.1",
-    "@types/mongodb": "^3.1.4",
     "ethereumjs-tx": "^1.3.7",
     "moment": "^2.22.2",
+    "mongodb": "^3.1.4",
     "mosca": "^2.8.3",
     "rxjs": "^6.2.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1"
   },
   "devDependencies": {
+    "@types/mongodb": "^3.1.4",
     "@types/mosca": "^2.8.1",
     "@types/node": "^10.9.1",
+    "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
-    "babel-cli": "^6.26.0",
     "rimraf": "^2.6.2"
   },
   "babel": {

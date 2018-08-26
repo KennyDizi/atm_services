@@ -2,6 +2,6 @@
 //https://www.npmjs.com/package/@types/mongodb
 export enum mongodbConnections
 {
-    local = "localhost",
+    local = "mongodb://localhost:27017/atms",
     cloud = "mongodb+srv://dbmanager:eLAvxCeoe5BFSBFg@atms-sznh7.mongodb.net/admin"
 }
