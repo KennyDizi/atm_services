@@ -6,13 +6,13 @@ import { mongoDbNaming } from '../defines/mongoDbNaming';
 import * as mongoose from "mongoose";
 
 export class atmLocationStatusMessage {
-    private locations: mongoose.Document[];
+    public locations: mongoose.Document[];
     constructor(locations: mongoose.Document[]) {
         this.locations = locations;
     }
 
     public createMessage(topic: string, retain: boolean, qos: number) : Packet {
-        var builder = new messageBuilder(this.locations);
+        var builder = new messageBuilder(this);
         var message = builder.buildPacket(topic, retain, qos, messageTypes.atmLocationStatusReply);
         return message;
     }

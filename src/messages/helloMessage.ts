@@ -15,7 +15,7 @@ export class helloMessage {
     }
 
     public createMessage(topic: string, retain: boolean, qos: number) : Packet {
-        var builder = new messageBuilder(new helloMessage());
+        var builder = new messageBuilder(this);
         var message = builder.buildPacket(topic, retain, qos, messageTypes.helloReply)
         return message;
     }
