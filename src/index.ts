@@ -2,28 +2,19 @@
 import { timer, Operator } from 'rxjs';
 import {Moment} from 'moment';
 import {messageTypes} from './defines/messageTypes';
-import {mongodbConnections} from './defines/mongodbConnections';
-
-/*
-  timer takes a second argument, how often to emit subsequent values
-  in this case we will emit first value after 1 second and subsequent
-  values every 2 seconds after
-*/
-const source = timer(1000, 2000);
-//output: 0,1,2,3,4,5......
-source.subscribe(val => 
-  console.log(`Ahihi Next index: ${val}`)
-);
+import {mongodbConnectionExs} from './defines/mongodbConnections';
+import * as mongoose from "mongoose";
 
 /*** loading mosca server ***/
 
 import {Server, persistence, Client, Packet} from 'mosca';
+import { networkTypes } from './defines/networkTypes';
 
 /*###########################*/
 
 /*** database settings for mongodb***/
 //https://github.com/mcollina/mosca/issues/742
-var mongoDbUrl = "mongodb://localhost:27017/atms";
+var mongoDbUrl = mongodbConnectionExs.getConnection(networkTypes.localhost);
 
 var dbSettings = {
   type: 'mongo', // it can be mongo / redis
@@ -113,133 +104,155 @@ persistence:{
   backend: dbSettings
 }
 
-/*#########################*/
+//mongodb
+var mgConnection = mongodbConnectionExs.getConnection(networkTypes.localhost);
+mongoose.connect(mgConnection, { useNewUrlParser: true });
+var conn = mongoose.connection;             
+ 
+conn.on('error', console.error.bind(console, 'connection error:'));  
+ 
+conn.once('open', function() {
+  console.log(`======================> Connect with mongo.`)
+  // Wait for the database connection to establish, then start the app.
+  /*#########################*/
 
-/** creating the mqtt server **/
+  /** creating the mqtt server **/
 
-var server = new Server(serverSettings);
+  var server = new Server(serverSettings);
 
-/****** event listeners *********/
+  /****** event listeners *********/
 
-// fired when client is connected
-server.on('clientConnected', onClientConnected);
-function onClientConnected(mqttClient: Client){
-  console.log("Client connected with id", mqttClient.id, "\n");
-}
-
-// fired when a message is received
-server.on('published', onPublished);
-function onPublished(packet: Packet, mqttClient: Client){
-  if(mqttClient && packet)
-    {
-      try
-      {
-        var data = packet.payload.toString("utf-8");
-        var value = JSON.parse(data);
-        var messageType = value.messageType;
-
-        if(messageType % 2 == 0)
-        {
-          //var sendTime = Moment().format('MMMM Do YYYY, h:mm:ss a');
-          console.log("Message sent to client : \n", value);          
-          //console.log("at: ", sendTime);
-        }
-        else
-        {
-          console.log("Message received from: " + mqttClient.id + " packet : \n", value);
-
-          //process message here
-          switch(messageType)
-          {
-            case messageTypes.hello:
-            {
-            }
-            break;
-
-            case messageTypes.atmLocationStatus:
-            {
-            }
-            break;
-
-            case messageTypes.atmTradingPrice:
-            {
-            }
-            break;
-
-            case messageTypes.atmTradingStatus:
-            {
-            }
-            break;
-
-            case messageTypes.atmLocationStatus:
-            {
-
-            }
-            break;
-          }
-        }
-      }
-      catch (error)
-      {
-        console.log(error.message);
-      }
-    }
+  // fired when client is connected
+  server.on('clientConnected', onClientConnected);
+  function onClientConnected(mqttClient: Client){
+    console.log("Client connected with id", mqttClient.id, "\n");
   }
 
-//fired when client subscribed a topic
-server.on('subscribed', function(topic, mqttClient){
-  console.log("client", mqttClient.id, "subscribed topic", topic, "\n");
-});
-
-//fired when client unsubscribed a topic
-server.on('unsubscribed', function(topic, mqttClient){
-  console.log("client", mqttClient.id, "unsubscribed topic", topic, "\n");
-});
-
-//fired when client disconnected
-server.on('clientDisconnected', onClientDisconnected);
-function onClientDisconnected(mqttClient: Client){
-  console.log("client", mqttClient.id, "clientDisconnected", "\n");
-}
-
-server.on('ready', setup);
-function setup(){
-  console.log('BTC Exchange server is running');
-  console.log(server);
-  
-  /*
-  server.authenticate       = authorizer.authenticate;
-  server.authorizePublish   = authorizer.authorizePublish;
-  server.authorizeSubscribe = authorizer.authorizeSubscribe;
-  */
-
-  /*
-  timer takes a second argument, how often to emit subsequent values
-  in this case we will emit first value after 1 minute and subsequent
-  values every 2 minutes after
-  */
- 
-  /*
-  const source = timer(3000, 20000);//fast test
-  //const source = timer(60000, 120000);
-  source.subscribe(val =>
-    {
-      console.log(val);
-
-      var mqttClients = server.clients;
-      var mqttClient;
-      for(mqttClient in mqttClients)
+  // fired when a message is received
+  server.on('published', onPublished);
+  function onPublished(packet: Packet, mqttClient: Client){
+    if(mqttClient && packet)
       {
-        if(!mqttClient) return;
-        console.log(`\n mqtt client: ${mqttClient}`);
-        var retain = true;
-        var qos = 1;
-        console.log(`\n topic: ${mqttClient}, qos: ${qos}, retain: ${retain}`);
+        try
+        {
+          var data = packet.payload.toString("utf-8");
+          var value = JSON.parse(data);
+          var messageType = value.messageType;
 
-        var reactor = new locationStatusReactor(mqttClient, retain, qos);
-        reactor.processMessage(server);
-      }      
+          if(messageType % 2 == 0)
+          {
+            //var sendTime = Moment().format('MMMM Do YYYY, h:mm:ss a');
+            console.log("Message sent to client : \n", value);          
+            //console.log("at: ", sendTime);
+          }
+          else
+          {
+            console.log("Message received from: " + mqttClient.id + " packet : \n", value);
+
+            //process message here
+            switch(messageType)
+            {
+              case messageTypes.hello:
+              {
+              }
+              break;
+
+              case messageTypes.atmLocationStatus:
+              {
+              }
+              break;
+
+              case messageTypes.atmTradingPrice:
+              {
+              }
+              break;
+
+              case messageTypes.atmTradingStatus:
+              {
+              }
+              break;
+
+              case messageTypes.atmLocationStatus:
+              {
+
+              }
+              break;
+            }
+          }
+        }
+        catch (error)
+        {
+          console.log(error.message);
+        }
+      }
     }
-  );
-  */
-}
+
+  //fired when client subscribed a topic
+  server.on('subscribed', function(topic, mqttClient){
+    console.log("client", mqttClient.id, "subscribed topic", topic, "\n");
+  });
+
+  //fired when client unsubscribed a topic
+  server.on('unsubscribed', function(topic, mqttClient){
+    console.log("client", mqttClient.id, "unsubscribed topic", topic, "\n");
+  });
+
+  //fired when client disconnected
+  server.on('clientDisconnected', onClientDisconnected);
+  function onClientDisconnected(mqttClient: Client){
+    console.log("client", mqttClient.id, "clientDisconnected", "\n");
+  }
+
+  server.on('ready', setup);
+  function setup(){
+    console.log('======================> BTC Exchange server is running.');
+    console.log(server);
+
+    /*
+      timer takes a second argument, how often to emit subsequent values
+      in this case we will emit first value after 1 second and subsequent
+      values every 2 seconds after
+    */
+    const source = timer(1000, 2000);
+    //output: 0,1,2,3,4,5......
+    source.subscribe(val => 
+      console.log(`Ahihi Next index: ${val}`)
+    );
+
+    /*
+    server.authenticate       = authorizer.authenticate;
+    server.authorizePublish   = authorizer.authorizePublish;
+    server.authorizeSubscribe = authorizer.authorizeSubscribe;
+    */
+
+    /*
+    timer takes a second argument, how often to emit subsequent values
+    in this case we will emit first value after 1 minute and subsequent
+    values every 2 minutes after
+    */
+  
+    /*
+    const source = timer(3000, 20000);//fast test
+    //const source = timer(60000, 120000);
+    source.subscribe(val =>
+      {
+        console.log(val);
+
+        var mqttClients = server.clients;
+        var mqttClient;
+        for(mqttClient in mqttClients)
+        {
+          if(!mqttClient) return;
+          console.log(`\n mqtt client: ${mqttClient}`);
+          var retain = true;
+          var qos = 1;
+          console.log(`\n topic: ${mqttClient}, qos: ${qos}, retain: ${retain}`);
+
+          var reactor = new locationStatusReactor(mqttClient, retain, qos);
+          reactor.processMessage(server);
+        }      
+      }
+    );
+    */
+  }          
+});
