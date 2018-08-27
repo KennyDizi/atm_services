@@ -4,13 +4,15 @@ export class transferableMessage
     public messageEnd: number;
     public messageType: number;
     public messageContent: string;
-    
-    constructor(messageStart: number, messageEnd: number, messageType: number, messageId: number, messageContent: string)
+    public clientId: string;
+
+    constructor(messageStart: number, messageEnd: number, messageType: number, messageId: number, clientId: string, messageContent: string)
     {
         this.messageStart = messageStart;
         this.messageEnd = messageEnd;
         this.messageType = messageType;
         this.messageEnd = messageId;
         this.messageContent = messageContent;
+        this.clientId = clientId;
     }
 }

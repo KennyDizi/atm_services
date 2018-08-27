@@ -9,6 +9,8 @@ import * as mongoose from "mongoose";
 
 import {Server, persistence, Client, Packet} from 'mosca';
 import { networkTypes } from './defines/networkTypes';
+import { helloReactor } from './reactors/helloReactor';
+import { atmLocationStatusReactor } from './reactors/atmLocationStatusReactor';
 
 /*###########################*/
 
@@ -125,7 +127,7 @@ conn.once('open', function() {
   // fired when client is connected
   server.on('clientConnected', onClientConnected);
   function onClientConnected(mqttClient: Client){
-    console.log("Client connected with id", mqttClient.id, "\n");
+    console.log("Client connected with id: ", mqttClient.id, "\n");
   }
 
   // fired when a message is received
@@ -142,23 +144,32 @@ conn.once('open', function() {
           if(messageType % 2 == 0)
           {
             //var sendTime = Moment().format('MMMM Do YYYY, h:mm:ss a');
-            console.log("Message sent to client : \n", value);          
+            console.log("Message sent to client: \n", value);          
             //console.log("at: ", sendTime);
           }
           else
           {
             console.log("Message received from: " + mqttClient.id + " packet : \n", value);
-
+            var messageContent = JSON.parse(value.messageContent);
+            var retain = packet.retain;
+            var qos = packet.qos;
+            var topic = packet.topic;
+            var clientId = messageContent.clientId;
             //process message here
             switch(messageType)
             {
               case messageTypes.hello:
               {
+                var helloRat = new helloReactor(topic, retain, qos, clientId);
+                helloRat.processMessage(server, mqttClient);              
               }
               break;
 
               case messageTypes.atmLocationStatus:
               {
+                var network = messageContent.network;
+                var atmLocationStatusRat = new atmLocationStatusReactor(topic, retain, qos, clientId, network);
+                atmLocationStatusRat.processMessage(server, mqttClient);
               }
               break;
 

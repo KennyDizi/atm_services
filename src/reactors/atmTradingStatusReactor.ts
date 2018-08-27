@@ -2,10 +2,10 @@ import { Server, Client } from "mosca";
 import * as mongoose from "mongoose";
 import { mongoDbNaming } from '../defines/mongoDbNaming';
 import { atmLocationStatusSchema} from '../models/atmLocationStatusModel';
-import { atmLocationStatusMessage } from "../messages/atmLocationStatusMessage";
+import { atmTradingStatusMessage } from "../messages/atmTradingStatusMessage";
 const atmLocationStatus = mongoose.model(mongoDbNaming.atmLocationStatus, atmLocationStatusSchema);
 
-export class atmLocationStatusReactor {
+export class atmTradingStatusReactor {
     private topic: string;
     private retain: boolean;
     private qos: number;
@@ -21,13 +21,13 @@ export class atmLocationStatusReactor {
     }
 
     processMessage(socketServer: Server, mqttClient: Client) {
-           atmLocationStatus.find({network : this.network}, (err, locations) => {
+        atmLocationStatus.find({network: this.network}, (err, status) => {
             if(err) {
                 console.log(err);
             }
             else {
-                console.log(locations);
-                var msg = new atmLocationStatusMessage(locations);
+                console.log(status);
+                var msg = new atmTradingStatusMessage(status);
                 var packet = msg.createMessage(this.topic, this.retain, this.qos, this.clientId);
                 socketServer.published(packet, mqttClient, function(cb) {
                     console.log(`Send message with callback: ${cb}`);

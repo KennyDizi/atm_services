@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { machineInventory } from '../defines/machineInventory';
 const Schema = mongoose.Schema;
 
-export const atmLocationStatusSchema = new Schema({
+export const atmTradingStatusSchema = new Schema({
     machineId : {
         type: String
     },

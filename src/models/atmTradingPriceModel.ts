@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export const atmLocationStatusSchema = new Schema({
+export const atmTradingPriceSchema = new Schema({
     machineId : {
         type: String
     },
