@@ -11,10 +11,16 @@ export const atmTradingPriceSchema = new Schema({
     machineAddress : {
         type : String
     },
-    machineBuyPrice : {
+    machineBTCBuyPrice : {
         type : Number
     },
-    machineSellPrice : {
+    machineBTCSellPrice : {
+        type : Number
+    },
+    machineETHBuyPrice : {
+        type : Number
+    },
+    machineETHSellPrice : {
         type : Number
     },
     network : {
