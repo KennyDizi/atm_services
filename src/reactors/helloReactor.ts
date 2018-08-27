@@ -15,7 +15,7 @@ export class helloReactor {
     }
 
     public processMessage(socketServer: Server, mqttClient: Client) : void {
-        var packet = new helloMessage(this.clientId).createMessage(this.topic, this.retain, this.qos);
+        var packet = new helloMessage().createMessage(this.topic, this.retain, this.qos, this.clientId);
         socketServer.published(packet, mqttClient, function(cb) {
             console.log(`Send message with callback: ${cb}`);
         });
