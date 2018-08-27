@@ -13,6 +13,5 @@ export const atmLocationStatusSchema = new Schema({
     },
     machineAddress : {
         type : String
-    },
-
+    }
 });
