@@ -1,8 +1,6 @@
 import { messageBuilder } from "./messageBuilder";
 import { Packet } from "mosca";
 import { messageTypes } from "../defines/messageTypes";
-import { helloMessage } from "./helloMessage";
-import { mongoDbNaming } from '../defines/mongoDbNaming';
 import * as mongoose from "mongoose";
 
 export class atmLocationStatusMessage {

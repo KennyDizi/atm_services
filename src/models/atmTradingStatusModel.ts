@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { machineInventory } from '../defines/machineInventory';
 const Schema = mongoose.Schema;
 
 export const atmLocationStatusSchema = new Schema({
@@ -14,10 +15,10 @@ export const atmLocationStatusSchema = new Schema({
     machineAddress : {
         type : String
     },
-    machineLongtitude : {
-        type : Number
+    machineInventory : {
+        type : machineInventory
     },
-    machineLatitude : {
-        type : Number
-    },
+    machineType : {
+        type : String
+    }
 });

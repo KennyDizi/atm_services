@@ -5,19 +5,16 @@ export const atmLocationStatusSchema = new Schema({
     machineId : {
         type: String
     },
-    machineOnline : {
-        type : Boolean
-    },
     machineName : {
         type : String
     },
     machineAddress : {
         type : String
     },
-    machineLongtitude : {
+    machineBuyPrice : {
         type : Number
     },
-    machineLatitude : {
+    machineSellPrice : {
         type : Number
-    },
+    }
 });
