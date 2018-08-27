@@ -111,9 +111,9 @@ persistence:{
 //mongodb
 var mgConnection = mongodbConnectionExs.getConnection(networkTypes.testnet);
 mongoose.connect(mgConnection, { useNewUrlParser: true });
-var conn = mongoose.connection;             
+var conn = mongoose.connection;
  
-conn.on('error', console.error.bind(console, 'connection error:'));  
+conn.on('error', console.error.bind(console, 'connection error:')); 
  
 conn.once('open', function() {
   console.log(`======================> Connect with mongo.`)
@@ -128,13 +128,13 @@ conn.once('open', function() {
 
   // fired when client is connected
   server.on('clientConnected', onClientConnected);
-  function onClientConnected(mqttClient: Client){
+  function onClientConnected(mqttClient: Client) {
     console.log("Client connected with id: ", mqttClient.id, "\n");
   }
 
   // fired when a message is received
   server.on('published', onPublished);
-  function onPublished(packet: Packet, mqttClient: Client){
+  function onPublished(packet: Packet, mqttClient: Client) {
     if(mqttClient && packet)
       {
         try
@@ -200,18 +200,18 @@ conn.once('open', function() {
     }
 
   //fired when client subscribed a topic
-  server.on('subscribed', function(topic, mqttClient){
+  server.on('subscribed', function(topic, mqttClient) {
     console.log("client", mqttClient.id, "subscribed topic", topic, "\n");
   });
 
   //fired when client unsubscribed a topic
-  server.on('unsubscribed', function(topic, mqttClient){
+  server.on('unsubscribed', function(topic, mqttClient) {
     console.log("client", mqttClient.id, "unsubscribed topic", topic, "\n");
   });
 
   //fired when client disconnected
   server.on('clientDisconnected', onClientDisconnected);
-  function onClientDisconnected(mqttClient: Client){
+  function onClientDisconnected(mqttClient: Client) {
     console.log("client", mqttClient.id, "clientDisconnected", "\n");
   }
 
