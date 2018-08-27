@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { machineInventory } from '../defines/machineInventory';
+import { networkTypes } from '../defines/networkTypes';
 const Schema = mongoose.Schema;
 
 export const atmTradingStatusSchema = new Schema({
@@ -20,5 +21,8 @@ export const atmTradingStatusSchema = new Schema({
     },
     machineType : {
         type : String
+    },
+    network : {
+        type : networkTypes
     }
 });

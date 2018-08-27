@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { networkTypes } from '../defines/networkTypes';
 const Schema = mongoose.Schema;
 
 export const atmTradingPriceSchema = new Schema({
@@ -16,5 +17,8 @@ export const atmTradingPriceSchema = new Schema({
     },
     machineSellPrice : {
         type : Number
+    },
+    network : {
+        type : networkTypes
     }
 });
