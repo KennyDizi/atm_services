@@ -8,7 +8,7 @@ exports.SATOSHI_FACTOR = 1e8;
 exports.FUDGE_FACTOR = 1.05;
 
 // supported currencies
-exports.COINMATE_CURRENCIES = ['EUR', 'CZK'];
+exports.COINMATE_CURRENCIES = ['EUR', 'CZK', 'USD', 'SGD'];
 
 // set to 1 to trade using instant orders, or 0 for limit orders with spread specified
 // by FUDGE_FACTOR
