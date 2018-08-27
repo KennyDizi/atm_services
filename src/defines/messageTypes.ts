@@ -7,5 +7,7 @@ export enum messageTypes
     atmTradingStatus = 2005,
     atmTradingStatusReply = 2006,
     atmTradingPrice = 2007,
-    atmTradingPriceReply = 2008
+    atmTradingPriceReply = 2008,
+    updateAtmStatus = 1045,
+    updateAtmStatusReply = 1046
 }
