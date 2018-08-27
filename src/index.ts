@@ -11,6 +11,8 @@ import {Server, persistence, Client, Packet} from 'mosca';
 import { networkTypes } from './defines/networkTypes';
 import { helloReactor } from './reactors/helloReactor';
 import { atmLocationStatusReactor } from './reactors/atmLocationStatusReactor';
+import { atmTradingPriceReactor } from './reactors/atmTradingPriceReactor';
+import { atmTradingStatusReactor } from './reactors/atmTradingStatusReactor';
 
 /*###########################*/
 
@@ -155,6 +157,8 @@ conn.once('open', function() {
             var qos = packet.qos;
             var topic = packet.topic;
             var clientId = messageContent.clientId;
+            var network = messageContent.network;
+
             //process message here
             switch(messageType)
             {
@@ -166,8 +170,7 @@ conn.once('open', function() {
               break;
 
               case messageTypes.atmLocationStatus:
-              {
-                var network = messageContent.network;
+              {                
                 var atmLocationStatusRat = new atmLocationStatusReactor(topic, retain, qos, clientId, network);
                 atmLocationStatusRat.processMessage(server, mqttClient);
               }
@@ -175,17 +178,15 @@ conn.once('open', function() {
 
               case messageTypes.atmTradingPrice:
               {
+                var atmTradingPriceRat = new atmTradingPriceReactor(topic, retain, qos, clientId, network);
+                atmTradingPriceRat.processMessage(server, mqttClient);
               }
               break;
 
               case messageTypes.atmTradingStatus:
               {
-              }
-              break;
-
-              case messageTypes.atmLocationStatus:
-              {
-
+                var atmTradingStatusRat = new atmTradingStatusReactor(topic, retain, qos, clientId, network);
+                atmTradingStatusRat.processMessage(server, mqttClient);
               }
               break;
             }

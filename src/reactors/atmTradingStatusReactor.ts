@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import { mongoDbNaming } from '../defines/mongoDbNaming';
 import { atmLocationStatusSchema} from '../models/atmLocationStatusModel';
 import { atmTradingStatusMessage } from "../messages/atmTradingStatusMessage";
-const atmLocationStatus = mongoose.model(mongoDbNaming.atmLocationStatus, atmLocationStatusSchema);
+const atmLocationStatus = mongoose.model(mongoDbNaming.atmTradingStatus, atmLocationStatusSchema);
 
 export class atmTradingStatusReactor {
     private topic: string;
