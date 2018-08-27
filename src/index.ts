@@ -4,6 +4,10 @@ import {Moment} from 'moment';
 import {messageTypes} from './defines/messageTypes';
 import {mongodbConnectionExs} from './defines/mongodbConnections';
 import * as mongoose from "mongoose";
+import {kraken, bitstamp} from 'ccxt';
+
+var x = new kraken();
+var bst = new bitstamp();
 
 /*** loading mosca server ***/
 

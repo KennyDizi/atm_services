@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/xamarindevelopervietnam/atm_services#readme",
   "dependencies": {
+    "ccxt": "^1.17.194",
     "chance": "^1.0.16",
     "ethereumjs-tx": "^1.3.7",
     "moment": "^2.22.2",
