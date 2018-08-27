@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { machineInventory } from '../defines/machineInventory';
 const Schema = mongoose.Schema;
 
 export const atmTradingStatusSchema = new Schema({
@@ -16,7 +15,7 @@ export const atmTradingStatusSchema = new Schema({
         type : String
     },
     machineInventory : {
-        type : machineInventory
+        type : Number
     },
     machineType : {
         type : String
