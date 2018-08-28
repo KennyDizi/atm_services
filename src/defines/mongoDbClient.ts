@@ -1,12 +1,13 @@
 import { MongoClient, Db } from "mongodb";
-import { mongodbConnections } from './mongodbConnections'
+import { mongodbConnectionExs } from './mongodbConnections'
+import { networkTypes } from "./networkTypes";
 
 export class mongoDbClient {
     public db!: MongoClient;
 
     public async connect() {
         // async / await approach:
-        this.db = await MongoClient.connect(mongodbConnections.local);
+        this.db = await MongoClient.connect(mongodbConnectionExs.getConnection(networkTypes.testnet));
         console.log("Connected to db");
         return this.db;
 
