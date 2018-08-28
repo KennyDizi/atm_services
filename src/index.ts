@@ -17,6 +17,10 @@ import { helloReactor } from './reactors/helloReactor';
 import { atmLocationStatusReactor } from './reactors/atmLocationStatusReactor';
 import { atmTradingPriceReactor } from './reactors/atmTradingPriceReactor';
 import { atmTradingStatusReactor } from './reactors/atmTradingStatusReactor';
+import { manualEnvironment } from './defines/manualEnvironment';
+
+//setup environment
+manualEnvironment.setNetwork(networkTypes.testnet);
 
 /*###########################*/
 
